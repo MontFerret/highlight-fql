@@ -1,0 +1,26 @@
+{
+  "name": "@montferret/highlight-fql",
+  "version": "1.0.0-rc.1",
+  "description": "FQL syntax highlight",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MontFerret/highlight-fql.git"
+  },
+  "keywords": [
+    "ferret",
+    "highlight",
+    "fql",
+    "syntax",
+    "browser"
+],
+  "author": "MontFerret Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MontFerret/highlight-fql/issues"
+  },
+  "homepage": "https://github.com/MontFerret/highlight-fql#readme"
+}
