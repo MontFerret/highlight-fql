@@ -1,6 +1,6 @@
 {
   "name": "@montferret/highlight-fql",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "FQL syntax highlight",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
     "fql",
     "syntax",
     "browser"
-],
+  ],
   "author": "MontFerret Team",
   "license": "MIT",
   "bugs": {
