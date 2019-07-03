@@ -57,6 +57,7 @@
     
         return {
             aliases: ["fql"],
+            case_insensitive: false,
             keywords: KEYWORDS,
             contains: [
                 hljs.APOS_STRING_MODE,
@@ -79,47 +80,6 @@
                             ]
                         }
                     ]
-                },
-                {
-                    // "value" container
-                    begin:
-                        "(" +
-                        hljs.RE_STARTERS_RE +
-                        "|\\b(case|return|throw)\\b)\\s*",
-                    keywords: "return throw case",
-                    contains: [
-                        hljs.C_LINE_COMMENT_MODE,
-                        hljs.C_BLOCK_COMMENT_MODE,
-                        hljs.REGEXP_MODE,
-                        {
-                            className: "function",
-                            begin: "(\\(.*?\\)|" + IDENT_RE + ")\\s*=>",
-                            returnBegin: true,
-                            end: "\\s*=>",
-                            contains: [
-                                {
-                                    className: "params",
-                                    variants: [
-                                        {
-                                            begin: IDENT_RE
-                                        },
-                                        {
-                                            begin: /\(\s*\)/
-                                        },
-                                        {
-                                            begin: /\(/,
-                                            end: /\)/,
-                                            excludeBegin: true,
-                                            excludeEnd: true,
-                                            keywords: KEYWORDS,
-                                            contains: PARAMS_CONTAINS
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    relevance: 0
                 },
                 hljs.METHOD_GUARD
             ],
