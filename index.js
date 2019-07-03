@@ -50,37 +50,18 @@
             NUMBER,
             hljs.REGEXP_MODE
         ];
-        var PARAMS_CONTAINS = SUBST.contains.concat([
-            hljs.C_BLOCK_COMMENT_MODE,
-            hljs.C_LINE_COMMENT_MODE
-        ]);
     
         return {
             aliases: ["fql"],
             case_insensitive: false,
             keywords: KEYWORDS,
             contains: [
+                hljs.C_LINE_COMMENT_MODE,
+                hljs.C_BLOCK_COMMENT_MODE,
                 hljs.APOS_STRING_MODE,
                 hljs.QUOTE_STRING_MODE,
                 TEMPLATE_STRING,
-                hljs.C_LINE_COMMENT_MODE,
-                hljs.C_BLOCK_COMMENT_MODE,
                 NUMBER,
-                {
-                    // object attr container
-                    begin: /[{,]\s*/,
-                    relevance: 0,
-                    contains: [
-                        {
-                            begin: IDENT_RE + "\\s*:",
-                            returnBegin: true,
-                            relevance: 0,
-                            contains: [
-                                { className: "attr", begin: IDENT_RE, relevance: 0 }
-                            ]
-                        }
-                    ]
-                },
                 hljs.METHOD_GUARD
             ],
             illegal: /#(?!!)/
