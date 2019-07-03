@@ -29,44 +29,31 @@
             ],
             relevance: 0
         };
-        var STRINGS = {
+        var BACKTICK_STRING = {
             className: 'string',
-            variants: [
-              hljs.QUOTE_STRING_MODE,
-              {begin: '\'', end: '[^\\\\]\''},
-              {begin: '`', end: '`'},
-            ]
+            begin: '\`',
+            end: '\`',
+            illegal: '\\n',
+            contains: [hljs.BACKSLASH_ESCAPE],
+            relevance: 0
         };
-
-        var VARIABLES = {
-            className: 'keyword',
-            variants: [
-                {
-                    beginKeywords: 'LET'
-                },
-            ]
-        }
+        var PARAM = {
+            className: "params",
+            begin: '\@'
+        };
     
         return {
             aliases: ["fql"],
             case_insensitive: false,
             keywords: KEYWORDS,
             contains: [
+                hljs.APOS_STRING_MODE,
+                hljs.QUOTE_STRING_MODE,
+                BACKTICK_STRING,
+                NUMBER,
+                PARAM,
                 hljs.C_LINE_COMMENT_MODE,
                 hljs.C_BLOCK_COMMENT_MODE,
-                NUMBER,
-                STRINGS,
-                VARIABLES,
-                {
-                    className: 'keyword',
-                    variants: [
-                        {
-                            begin: /\FOR\s*\(/,
-                            end: /\IN\b/,
-                            returnEnd: true
-                        },
-                    ]
-                  }
             ],
             illegal: /#(?!!)/
         };

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/styles/an-old-hope.min.css" />
+    <title>FQL Highlight test page</title>
+  </head>
+  <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-6">
+                    <pre class="hljs">
+                        <code class="fql">
+        LET doc = DOCUMENT('https://soundcloud.com/charts/top', { driver: "cdp" })
+        
+        WAIT_ELEMENT(doc, '.chartTrack__details', 5000)
+        
+        LET tracks = ELEMENTS(doc, '.chartTrack__details')
+        
+        FOR track IN tracks
+            RETURN {
+                artist: TRIM(INNER_TEXT(track, '.chartTrack__username')),
+                track: TRIM(INNER_TEXT(track, '.chartTrack__title'))
+            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-6">
+                    <pre class="hljs">
+                        <code class="fql">
+                            LET amazon = DOCUMENT("https://www.amazon.com/", true)
+
+                            INPUT(amazon, `#twotabsearchtextbox`, @criteria)
+                            CLICK(amazon, '.nav-search-submit input[type="submit"]')
+                            WAIT_NAVIGATION(amazon)
+                            
+                            LET resultListSelector = 'div.s-result-list'
+                            LET resultItemSelector = 'div.s-result-item'
+                            LET nextBtnSelector = 'ul.a-pagination .a-last a'
+                            LET vendorSelector1 = 'div > div:nth-child(3) > div:nth-child(2) > span:nth-child(2)'
+                            LET vendorSelector2 = 'div > div:nth-child(5) > div:nth-child(2) > span:nth-child(2)'
+                            LET priceWholeSelector = 'span.sx-price-whole'
+                            LET priceFracSelector = 'sup.sx-price-fractional'
+                            LET pagers = ELEMENTS(amazon, 'ul.a-pagination li.a-disabled')
+                            LET pages = LENGTH(pagers) > 0 ? TO_INT(INNER_TEXT(LAST(pagers))) : 0
+                            
+                            LET result = (
+                                FOR pageNum IN 1..pages
+                                    LET clicked = pageNum == 1 ? false : CLICK(amazon, nextBtnSelector)
+                                    LET wait = clicked ? WAIT_NAVIGATION(amazon) : false
+                                    LET waitSelector = wait ? WAIT_ELEMENT(amazon, resultListSelector) : false
+                            
+                                    PRINT("page:", pageNum, "clicked", clicked)
+                            
+                                    LET items = (
+                                        FOR el IN ELEMENTS(amazon, resultItemSelector)
+                                            LET priceWholeTxt = INNER_TEXT(el, priceWholeSelector)
+                                            LET priceFracTxt = INNER_TEXT(el, priceFracSelector)
+                                    LET price = TO_FLOAT(priceWholeTxt + "." + priceFracTxt)
+                                            LET vendor = ELEMENT_EXISTS(el, vendorSelector1) ? INNER_TEXT(el, vendorSelector1) : INNER_TEXT(el, vendorSelector2)
+                            
+                                            RETURN {
+                                                title: INNER_TEXT(el, 'h2'),
+                                                vendor,
+                                                price
+                                            }
+                                    )
+                            
+                                    RETURN items
+                            )
+                            
+                            RETURN FLATTEN(result)
+                        </code>
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js" integrity="sha256-js+I1fdbke/DJrW2qXQlrw7VUEqmdeFeOW37UC0bEiU=" crossorigin="anonymous"></script>
+    <script src="./index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // highlight
+            hljs.registerLanguage('fql', registerHLFQL);
+            hljs.initHighlighting();
+        });
+    </script>
+  </body>
+</html>
