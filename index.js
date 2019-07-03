@@ -10,7 +10,7 @@
         module.exports = factory();
     } else {
         // Browser globals (root is window)
-        root.registerHLFQL = factory();
+        root.registerFQL = factory();
   }
 }(typeof self !== 'undefined' ? self : this, function () {
     return function (hljs) {
