@@ -14,7 +14,6 @@
   }
 }(typeof self !== 'undefined' ? self : this, function () {
     return function (hljs) {
-        var IDENT_RE = "[A-Za-z$_][0-9A-Za-z$_]*";
         var KEYWORDS = {
             keyword:
                 "FOR IN RETURN LET AND OR LIMIT FILTER DISTINCT SORT COLLECT ASC DESC" +
@@ -30,26 +29,23 @@
             ],
             relevance: 0
         };
-        var SUBST = {
-            className: "subst",
-            begin: "\\$\\{",
-            end: "\\}",
-            keywords: KEYWORDS,
-            contains: [] // defined later
+        var STRINGS = {
+            className: 'string',
+            variants: [
+              hljs.QUOTE_STRING_MODE,
+              {begin: '\'', end: '[^\\\\]\''},
+              {begin: '`', end: '`'},
+            ]
         };
-        var TEMPLATE_STRING = {
-            className: "string",
-            begin: "`",
-            end: "`",
-            contains: [hljs.BACKSLASH_ESCAPE, SUBST]
-        };
-        SUBST.contains = [
-            hljs.APOS_STRING_MODE,
-            hljs.QUOTE_STRING_MODE,
-            TEMPLATE_STRING,
-            NUMBER,
-            hljs.REGEXP_MODE
-        ];
+
+        var VARIABLES = {
+            className: 'keyword',
+            variants: [
+                {
+                    beginKeywords: 'LET'
+                },
+            ]
+        }
     
         return {
             aliases: ["fql"],
@@ -58,11 +54,19 @@
             contains: [
                 hljs.C_LINE_COMMENT_MODE,
                 hljs.C_BLOCK_COMMENT_MODE,
-                hljs.APOS_STRING_MODE,
-                hljs.QUOTE_STRING_MODE,
-                TEMPLATE_STRING,
                 NUMBER,
-                hljs.METHOD_GUARD
+                STRINGS,
+                VARIABLES,
+                {
+                    className: 'keyword',
+                    variants: [
+                        {
+                            begin: /\FOR\s*\(/,
+                            end: /\IN\b/,
+                            returnEnd: true
+                        },
+                    ]
+                  }
             ],
             illegal: /#(?!!)/
         };
