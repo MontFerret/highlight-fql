@@ -14,7 +14,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-6">
-                    <pre class="hljs">
+                    <pre>
                         <code class="fql">
         LET doc = DOCUMENT('https://soundcloud.com/charts/top', { driver: "cdp" })
         
@@ -31,7 +31,7 @@
                     </pre>
                 </div>
                 <div class="col-6">
-                    <pre class="hljs">
+                    <pre>
                         <code class="fql">
                             LET amazon = DOCUMENT("https://www.amazon.com/", true)
 
@@ -79,6 +79,32 @@
                     </pre>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6">
+                    <pre>
+                        <code class="fql">
+                            [ 1, 2, 3 ] ALL IN [ 2, 3, 4 ]   // false
+[ 1, 2, 3 ] ALL IN [ 1, 2, 3 ]   // true
+[ 1, 2, 3 ] NONE IN [ 3 ]        // false
+[ 1, 2, 3 ] NONE IN [ 23, 42 ]   // true
+[ 1, 2, 3 ] ANY IN [ 4, 5, 6 ]   // false
+[ 1, 2, 3 ] ANY IN [ 1, 42 ]     // true
+[ 1, 2, 3 ] ANY == 2             // true
+[ 1, 2, 3 ] ANY == 4             // false
+[ 1, 2, 3 ] ANY > 0              // true
+[ 1, 2, 3 ] ANY <= 1             // true
+[ 1, 2, 3 ] NONE < 99            // false
+[ 1, 2, 3 ] NONE > 10            // true
+[ 1, 2, 3 ] ALL > 2              // false
+[ 1, 2, 3 ] ALL > 0              // true
+[ 1, 2, 3 ] ALL >= 3             // false
+["foo", "bar"] ALL != "moo"      // true
+["foo", "bar"] NONE == "bar"     // false
+["foo", "bar"] ANY == "foo"      // true
+                        </code>
+                    </pre>
+                </div>
+            </div>
         </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.8/highlight.min.js" integrity="sha256-js+I1fdbke/DJrW2qXQlrw7VUEqmdeFeOW37UC0bEiU=" crossorigin="anonymous"></script>
@@ -86,7 +112,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             // highlight
-            hljs.registerLanguage('fql', registerHLFQL);
+            hljs.registerLanguage('fql', registerFQL);
             hljs.initHighlighting();
         });
     </script>

@@ -17,8 +17,8 @@
         var KEYWORDS = {
             keyword:
                 "FOR IN RETURN LET AND OR LIMIT FILTER DISTINCT SORT COLLECT ASC DESC" +
-                "INTO KEEP WITH COUNT ALL ANY AGGREGATE LIKE NOT",
-            literal: "TRUE true FALSE false NONE"
+                "INTO KEEP WITH COUNT ALL ANY AGGREGATE LIKE NOT NONE",
+            literal: "TRUE true FALSE false"
         };
         var NUMBER = {
             className: "number",
